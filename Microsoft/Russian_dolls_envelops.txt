@@ -1,0 +1,88 @@
+Russian dolls envelops
+
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes) {
+        // Sort envelopes: width ascending, height descending if widths are the same
+        sort(envelopes.begin(), envelopes.end(), [](vector<int>& a, vector<int>& b) {
+            return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+        });
+
+        // Extract the heights
+        vector<int> heights;
+        for (auto& envelope : envelopes) {
+            heights.push_back(envelope[1]);
+        }
+
+        // Find LIS on heights
+        vector<int> lis;
+        for (int h : heights) {
+            auto it = lower_bound(lis.begin(), lis.end(), h);
+            if (it == lis.end()) {
+                lis.push_back(h); // Extend LIS
+            } else {
+                *it = h; // Replace element
+            }
+        }
+
+        return lis.size();
+    }
+};
+
+
+Improved Approach
+To solve the problem correctly, you can:
+
+Sort Envelopes: Sort by width in ascending order and height in descending order for equal widths.
+Longest Increasing Subsequence (LIS): Apply the LIS algorithm on the heights.
+
+
+
+Explanation of the Fixes
+
+Sorting:
+By sorting by width and height (descending for ties), we ensure that envelopes with the same width are not considered for nesting.
+LIS on Heights:
+
+After sorting, the problem reduces to finding the longest increasing subsequence (LIS) on the heights, as the widths are already sorted.
+Efficiency:
+
+Sorting takes 𝑂(𝑛log⁡𝑛).
+Finding LIS takes 𝑂(𝑛log⁡𝑛) using binary search.
+
+Total Time Complexity: 
+𝑂(nlogn)
+
+Example Walkthrough
+Input:
+
+envelopes = [[5,4], [6,4], [6,7], [2,3]]
+
+Steps:
+Sorted Envelopes:
+[[2,3],[5,4],[6,7],[6,4]]
+
+Heights for LIS:
+[3,4,7,4]
+
+LIS Calculation:
+Start with [][].
+
+Insert 3:[3]
+Insert 4: [3,4]
+Insert 7: [3,4,7]Replace 4 with 4(no change): [3,4,7]
+Output:LIS length=3
+LIS length=3
+The maximum number of envelopes that can be nested is 3.
+
+
+// Lower bound 
+lower_bound(lis.begin(), lis.end(), h):
+
+The lower_bound function is a part of the C++ Standard Library (<algorithm>).
+It searches for the first position in the range [lis.begin(), lis.end() ]
+where the value h can be inserted while maintaining the order of the list.
+In simpler terms, it finds the smallest element that is greater than
+or equal to h in the sorted sequence lis.
+
+
