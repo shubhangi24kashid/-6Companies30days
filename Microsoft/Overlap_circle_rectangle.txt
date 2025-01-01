@@ -1,0 +1,41 @@
+
+
+#include<stdio.h>
+#include<math.h>
+class Solution {
+public:
+    bool checkOverlap(int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2) {
+       int r1= max(x1, min(xCenter,x2));
+       int r2= max(y1, min(yCenter,y2));
+
+       int dis=(((xCenter- r1)*(xCenter- r1))+((yCenter- r2)*(yCenter- r2)));
+      
+
+       if(dis<=(radius* radius)) return true;
+
+       return false;
+
+    }
+};
+
+
+
+The lines:
+
+int r1 = max(x1, min(xCenter, x2));
+int r2 = max(y1, min(yCenter, y2));
+are used to calculate the nearest point on the rectangle to the circle's center. Let's break it down step by step:
+
+Key Idea:
+Rectangle's Bounds: The rectangle's corners are defined as:
+
+Bottom-left corner: 
+(𝑥1,𝑦1)(x1,y1)
+Top-right corner: 
+(𝑥2,𝑦2)(x2,y2)
+Circle's Center: The circle's center is at 
+(𝑥𝐶𝑒𝑛𝑡𝑒𝑟,𝑦𝐶𝑒𝑛𝑡𝑒𝑟)(xCenter,yCenter).
+
+The goal is to find the point on the rectangle (denoted as 
+(𝑟1,𝑟2)(r1,r2)) that is closest to the circle's center.
+
