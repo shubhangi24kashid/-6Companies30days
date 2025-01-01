@@ -1,0 +1,47 @@
+Find the winner of the circular game
+
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        vector<int>ans;
+
+        for(int i=1;i<=n;i++){
+            ans.push_back(i);
+        }
+        int ind=0;
+        while(ans.size()>1){
+            ind=(ind + k - 1) % ans.size();
+            ans.erase(ans.begin() + ind);
+        }
+        return ans[0];
+    }
+};
+
+
+Explanation:
+Initialization:The ans vector is populated with values from 1 to n.
+
+Index Calculation:The next index to eliminate is computed as (index + k - 1) % ans.size(). This ensures circular indexing.
+
+Erasure:ans.erase(ans.begin() + index) removes the selected element.
+
+Loop:The loop continues until only one element remains in the ans vector.
+
+Complexity:
+Time Complexity: 𝑂(𝑛^2), because erase is 𝑂(𝑛)and it is called 𝑛−1 times.
+Space Complexity: 𝑂(𝑛), for the ans vector.
+
+
+Optimized Approach (Without Extra Space):
+If you want an 𝑂(𝑛) solution, you can solve it using a mathematical formula (recurrence relation for the Josephus Problem)
+
+class Solution {
+public:
+    int findTheWinner(int n, int k) {
+        int winner = 0; // Base case for n = 1
+        for (int i = 2; i <= n; i++) {
+            winner = (winner + k) % i;
+        }
+        return winner + 1; // Convert 0-based index to 1-based
+    }
+};
