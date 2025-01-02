@@ -1,0 +1,47 @@
+image smoother
+
+
+class Solution {
+public:
+    vector<vector<int>> imageSmoother(vector<vector<int>>& img) {
+    int m=img.size();
+    int n=img[0].size();
+
+    vector<vector<int>>ans(m,vector<int>(n));
+
+    for(int i=0;i<m;i++){
+        for(int j=0;j<n;j++){
+            int sum=0;
+            int count=0;
+
+            for(int x=i-1; x<=i+1; x++){
+                for(int y=j-1; y<=j+1; y++){
+                  
+                  if(x>=0 && x<m && y>=0 && y<n){
+                    sum+=img[x][y];
+                    count++;
+                  }
+                }
+            }
+            ans[i][j]=sum/count;
+        }
+     }
+        return ans;
+    }
+};
+
+
+
+In this problem, we are given an m x n integer matrix img.
+We need to return a matrix of dimension m x n where each cell is obtained by 
+applying smoother on the corresponding cell of the img matrix. Now, smoother, 
+as given in the problem statement, can be thought of as an operator that 
+takes as an input a cell. It then returns the average of the values of the "cell 
+and its neighbors".
+
+average: the average of a list of integers is the sum of the integers divided by 
+the number of integers in the list. The average can be a floating point number, 
+and in that case, the smoother should round down the result to the nearest integer.
+
+
+neighbors: a cell is called a neighbor of another cell if they share a common edge or a common corner.

@@ -1,0 +1,42 @@
+Minimum number of moves to equal array II 
+
+
+#include <vector>
+#include <algorithm>
+
+class Solution {
+public:
+    int minMoves2(std::vector<int>& nums) {
+        // Sort the array to find the median
+        std::sort(nums.begin(), nums.end());
+        int median = nums[nums.size() / 2]; // Median for an odd-sized array
+
+        int count = 0;
+        for (int num : nums) {
+            count += std::abs(num - median); // Compute the total moves
+        }
+        return count;
+    }
+};
+
+
+Explanation of the Corrected Code:
+Sort the Array: Sorting ensures the median can be easily accessed.
+
+For an odd-sized array, the median is the middle element.
+For an even-sized array, either of the two middle elements minimizes the cost equally, so the above method works.
+Calculate Moves: For each number in the array, compute the absolute difference between the number and the median, 
+and sum up these differences.
+
+Time Complexity:
+
+Sorting takes 𝑂(𝑛log⁡𝑛).
+Calculating the total moves takes 𝑂(𝑛).
+Overall complexity: 𝑂(𝑛log⁡𝑛).
+
+Example:
+For nums = [1, 2, 3]:
+
+Median = 2.
+Moves = (|1 - 2| + |2 - 2| + |3 - 2|) = 1 + 0 + 1 = 2.
+This approach ensures correctness and efficiency.
