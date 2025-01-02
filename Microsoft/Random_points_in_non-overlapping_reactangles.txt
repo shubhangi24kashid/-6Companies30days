@@ -1,0 +1,103 @@
+Random point in non-overlapping rectangles
+
+class Solution {
+public:
+    
+    map<int,vector<int>> mp ;
+    int total_sum=0 ; 
+    
+    Solution(vector<vector<int>>& rects) {
+   
+        for(auto rect:rects){
+                 
+            int area=(rect[3]-rect[1]+1)*(rect[2]-rect[0]+1);
+            total_sum+=area; 
+            mp[total_sum]=rect ;
+        }
+    }
+    
+    vector<int> pick() {
+        
+        int r=rand()%total_sum ;
+        auto temp=mp.upper_bound(r);
+        
+        vector z=temp->second;
+            
+        int x=z[0]+rand()%(z[2]-z[0]+1);
+        int y=z[1]+rand()%(z[3]-z[1]+1) ;
+        
+        return {x,y} ;
+        
+        
+    }
+};
+
+Class Variables:
+map<int, vector<int>> mp:
+A map where the key is the cumulative area of rectangles and the value 
+is the rectangle itself ([x1, y1, x2, y2]).
+
+int total_sum:
+This keeps track of the cumulative sum of the areas of the rectangles. 
+It serves as the upper limit for random number generation.
+
+
+
+Constructor: Solution(vector<vector<int>>& rects)
+This initializes the map and calculates cumulative areas.
+
+Steps:
+Iterate through the rectangles (rect) in the input rects. Each rectangle is defined by [x1, y1, x2, y2],
+ where:
+ (x1,y1) is the bottom-left corner.
+ (x2,y2) is the top-right corner.
+
+ Calculate the area of the rectangle.
+
+Formula:
+Area
+=(𝑥2−𝑥1+1)×(𝑦2−𝑦1+1)
+Area=(x2−x1+1)×(y2−y1+1)
+The +1 accounts for the inclusiveness of the rectangle's boundaries.
+Update total_sum with the current rectangle's area.
+
+Store the rectangle in the map mp with the key as the cumulative area (total_sum).
+
+
+
+Method: 
+vector<int> pick()
+This method picks a random point based on the cumulative area.
+
+Steps:
+Generate a random number r in the range [0,total_sum−1].
+This is done using:
+int r = rand() % total_sum;
+
+
+Find the rectangle corresponding to r.
+
+Use mp.upper_bound(r) to find the first key in mp that is strictly greater than r.
+upper_bound ensures the rectangle with cumulative area containing r is selected.
+Retrieve the rectangle z.
+
+z is the rectangle corresponding to the key returned by upper_bound.
+z is of the form [x1, y1, x2, y2].
+
+Generate a random point within the rectangle.
+
+Random x-coordinate:
+    x=x1+(rand()%(x2−x1​+1))
+Random y-coordinate:
+         𝑦=𝑦1+(rand()%(𝑦2−𝑦1+1))
+Return the randomly generated point 
+[x,y].
+
+How It Works
+Proportional Selection:
+Each rectangle is selected with a probability proportional to its area because r is uniformly distributed in 
+
+[0,total_sum−1], and rectangles occupy ranges in this space proportional to their areas.
+
+Random Point Selection:
+Once a rectangle is selected, a random point is uniformly chosen within its bounds.
