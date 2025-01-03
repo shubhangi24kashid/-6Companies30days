@@ -1,0 +1,75 @@
+Bulls and cows 
+
+
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        int bulls = 0;
+        int cows = 0;
+
+        // Map to count characters in `secret`
+        unordered_map<char, int> mp;
+
+        // First pass: Count bulls and prepare the map for counting cows
+        for (int i = 0; i < secret.size(); i++) {
+            if (secret[i] == guess[i]) {
+                bulls++;
+            } else {
+                mp[secret[i]]++;
+            }
+        }
+
+        // Second pass: Count cows
+        for (int i = 0; i < guess.size(); i++) {
+            if (secret[i] != guess[i] && mp[guess[i]] > 0) {
+                cows++;
+                mp[guess[i]]--; // Decrement count to avoid overcounting
+            }
+        }
+
+        // Construct result string
+        string int_str1 = to_string(bulls);
+        string int_str2 = to_string(cows);
+        string ans = int_str1 + "A" + int_str2 + "B";
+
+        return ans;
+    }
+};
+
+
+
+Separate Passes for Bulls and Cows:
+
+The first pass counts bulls and only tracks characters not part of a bull in a map.
+The second pass counts cows by checking non-bull characters in guess against the map and ensures no overcounting by decrementing the count in the map.
+Avoid Overlapping Bulls and Cows:
+
+Characters contributing to bulls are excluded from the map for cow counting.
+Example Walkthrough:
+Input:
+secret = "1123"
+guess = "0111"
+
+First Pass (Count Bulls):
+Compare secret and guess character by character:
+Position 0: 1 != 0 (no bull)
+Position 1: 1 == 1 (bull count = 1)
+Position 2: 2 != 1 (no bull)
+Position 3: 3 != 1 (no bull)
+Map after first pass: { '1': 1, '2': 1, '3': 1 }
+Second Pass (Count Cows):
+Check each character in guess that is not a bull:
+Position 0: 0 (not in map, no cow)
+Position 2: 1 (in map, cow count = 1, decrement 1 in map)
+Position 3: 1 (in map, cow count = 1, decrement 1 in map)
+Final Map: { '1': 0, '2': 1, '3': 1 }
+Result:
+Bulls: 1
+Cows: 1
+Output: "1A1B"
+Output:
+This will now correctly return "1A1B" for the given input. Let me know if you need further clarification!
