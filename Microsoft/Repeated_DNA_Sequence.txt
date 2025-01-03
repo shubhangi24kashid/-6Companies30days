@@ -1,0 +1,58 @@
+Repeated DNA Sequence
+
+#include <vector>
+#include <string>
+#include <unordered_map>
+using namespace std;
+
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        unordered_map<string, int> mp;
+        vector<string> ans;
+
+        // If the string is smaller than 10, no substrings of length 10 exist
+        if (s.size() < 10) {
+            return ans;
+        }
+
+        // Traverse the string and count substrings of length 10
+        for (int i = 0; i <= s.size() - 10; i++) {
+            string substring = s.substr(i, 10);
+            mp[substring]++;
+        }
+
+        // Add substrings with count > 1 to the result
+        for (auto& x : mp) {
+            if (x.second > 1) {
+                ans.push_back(x.first);
+            }
+        }
+
+        return ans;
+    }
+};
+
+
+Preemptive Check for String Length:
+
+If s.size() < 10, return an empty vector immediately since no substrings of length 10 can exist.
+Bounds in the Loop:
+
+The loop condition ensures that i + 10 does not exceed the size of the string.
+Edge Case Handling:
+Empty String: s = ""
+
+Output: [].
+String Smaller than 10 Characters: s = "ABC"
+
+Output: [].
+String Exactly 10 Characters: s = "AAAAAAAAAA"
+
+Output: [] (no repeated sequences).
+
+
+
+
+
+

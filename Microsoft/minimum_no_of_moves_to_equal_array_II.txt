@@ -39,4 +39,3 @@ For nums = [1, 2, 3]:
 
 Median = 2.
 Moves = (|1 - 2| + |2 - 2| + |3 - 2|) = 1 + 0 + 1 = 2.
-This approach ensures correctness and efficiency.

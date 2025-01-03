@@ -71,5 +71,4 @@ Result:
 Bulls: 1
 Cows: 1
 Output: "1A1B"
-Output:
-This will now correctly return "1A1B" for the given input. Let me know if you need further clarification!
+

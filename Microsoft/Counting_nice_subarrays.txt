@@ -55,4 +55,3 @@ Output: 0 (no subarrays with odd numbers).
 
 Mix of Odd and Even: nums = [1, 2, 1, 2, 1], k = 2
 Output: 4.
-This corrected approach is efficient and handles all edge cases. Let me know if you'd like further explanation!
