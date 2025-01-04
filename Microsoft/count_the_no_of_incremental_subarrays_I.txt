@@ -1,0 +1,95 @@
+count the no of incremental subarrays
+
+class Solution {
+public:
+    int incremovableSubarrayCount(vector<int>& nums) {
+        int count = 0;
+
+        for (int start = 0; start < nums.size(); start++) {
+            for (int end = start; end < nums.size(); end++) {
+                vector<int> remain;
+
+                // Add elements before the subarray [start, end]
+                for (int i = 0; i < start; i++) {
+                    remain.push_back(nums[i]);
+                }
+
+                // Add elements after the subarray [start, end]
+                for (int i = end + 1; i < nums.size(); i++) {
+                    remain.push_back(nums[i]);
+                }
+
+                // Check if the remaining array is strictly increasing
+                if (isStrictlyIncreasing(remain)) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    bool isStrictlyIncreasing(vector<int>& remain) {
+        for (int i = 1; i < remain.size(); i++) {
+            if (remain[i] <= remain[i - 1]) {  // Strictly increasing condition
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+Complexity:
+Time Complexity: 
+𝑂(𝑛^3)
+Outer two loops: 𝑂(𝑛^2)
+Strictly increasing check: 𝑂(𝑛) for each subarray.
+Space Complexity: 𝑂(𝑛)
+Temporary remain vector.
+
+Subarrays of nums:
+
+Subarrays are contiguous, non-empty slices of nums.
+For nums = [1, 2, 3, 4], the possible subarrays are:
+[1], [2], [3], [4]
+[1, 2], [2, 3], [3, 4]
+[1, 2, 3], [2, 3, 4]
+[1, 2, 3, 4]
+Checking Each Subarray:
+
+For each subarray, we remove it and check if the remaining array is strictly increasing.
+Detailed Breakdown:
+
+Subarray [1]:
+Remaining array: [2, 3, 4]
+Strictly increasing: Yes
+Subarray [2]:
+Remaining array: [1, 3, 4]
+Strictly increasing: Yes
+Subarray [3]:
+Remaining array: [1, 2, 4]
+Strictly increasing: Yes
+Subarray [4]:
+Remaining array: [1, 2, 3]
+Strictly increasing: Yes
+Subarray [1, 2]:
+Remaining array: [3, 4]
+Strictly increasing: Yes
+Subarray [2, 3]:
+Remaining array: [1, 4]
+Strictly increasing: Yes
+Subarray [3, 4]:
+Remaining array: [1, 2]
+Strictly increasing: Yes
+Subarray [1, 2, 3]:
+Remaining array: [4]
+Strictly increasing: Yes
+Subarray [2, 3, 4]:
+Remaining array: [1]
+Strictly increasing: Yes
+Subarray [1, 2, 3, 4]:
+Remaining array: [] (empty array is considered strictly increasing)
+Strictly increasing: Yes
+Count:
+
+All 10 subarrays satisfy the condition of being incremovable.
