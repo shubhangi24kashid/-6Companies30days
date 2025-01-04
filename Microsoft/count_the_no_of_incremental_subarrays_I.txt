@@ -1,4 +1,4 @@
-count the no of incremental subarrays
+count the no of incremovable subarrays I
 
 class Solution {
 public:
