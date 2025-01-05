@@ -1,0 +1,57 @@
+Minimum cost to convert string I 
+
+
+#include <vector>
+#include <string>
+#include <climits>
+using namespace std;
+
+class Solution {
+public:
+    long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
+        const int INF = INT_MAX / 2; // Use a large value to represent unreachable transformations
+        const int ALPHABET_SIZE = 26;
+
+        // Step 1: Initialize the cost matrix
+        vector<vector<int>> minCost(ALPHABET_SIZE, vector<int>(ALPHABET_SIZE, INF));
+        for (int i = 0; i < ALPHABET_SIZE; i++) {
+            minCost[i][i] = 0; // Cost to transform a character to itself is 0
+        }
+
+        // Step 2: Fill the cost matrix with the given transformations
+        for (int i = 0; i < original.size(); i++) {
+            int from = original[i] - 'a';
+            int to = changed[i] - 'a';
+            minCost[from][to] = min(minCost[from][to], cost[i]); // Take the minimum cost for duplicates
+        }
+
+        // Step 3: Floyd-Warshall to compute all-pairs shortest paths
+        for (int k = 0; k < ALPHABET_SIZE; k++) {
+            for (int i = 0; i < ALPHABET_SIZE; i++) {
+                for (int j = 0; j < ALPHABET_SIZE; j++) {
+                    if (minCost[i][k] < INF && minCost[k][j] < INF) {
+                        minCost[i][j] = min(minCost[i][j], minCost[i][k] + minCost[k][j]);
+                    }
+                }
+            }
+        }
+
+        // Step 4: Calculate the total cost to transform `source` into `target`
+        long long totalCost = 0;
+
+        for (int i = 0; i < source.size(); i++) {
+            int from = source[i] - 'a';
+            int to = target[i] - 'a';
+
+            if (from == to) continue; // No cost if the characters are already the same
+
+            if (minCost[from][to] == INF) {
+                return -1; // Transformation is impossible
+            }
+
+            totalCost += minCost[from][to];
+        }
+
+        return totalCost;
+    }
+};

@@ -1,0 +1,55 @@
+Shopping offeres
+
+
+class Solution {
+public:
+    unordered_map<string, int> memo;
+
+    // Function to calculate the total cost without any offers
+    int directCost(vector<int>& price, vector<int>& needs) {
+        int total = 0;
+        for (int i = 0; i < needs.size(); i++) {
+            total += needs[i] * price[i];
+        }
+        return total;
+    }
+
+    // Recursive function to calculate the minimum cost
+    int dfs(vector<int>& price, vector<vector<int>>& special, vector<int> needs) {
+        // Convert needs to a string for memoization
+        string key = "";
+        for (int need : needs) key += to_string(need) + ",";
+        if (memo.count(key)) return memo[key];
+
+        // Calculate the cost without using any special offers
+        int minCost = directCost(price, needs);
+
+        // Try each special offer
+        for (auto& offer : special) {
+            vector<int> nextNeeds = needs;
+            bool valid = true;
+
+            // Check if the offer can be applied
+            for (int i = 0; i < needs.size(); i++) {
+                if (nextNeeds[i] < offer[i]) {
+                    valid = false;
+                    break;
+                }
+                nextNeeds[i] -= offer[i];
+            }
+
+            // If the offer is valid, calculate the cost recursively
+            if (valid) {
+                minCost = min(minCost, offer.back() + dfs(price, special, nextNeeds));
+            }
+        }
+
+        // Store the result in the memoization map and return
+        memo[key] = minCost;
+        return minCost;
+    }
+
+    int shoppingOffers(vector<int>& price, vector<vector<int>>& special, vector<int>& needs) {
+        return dfs(price, special, needs);
+    }
+};
