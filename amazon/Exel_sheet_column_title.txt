@@ -1,0 +1,15 @@
+Excel sheet column title
+
+class Solution {
+public:
+    string convertToTitle(int columnNumber) {
+        string st="";
+
+        while(columnNumber>0){
+            columnNumber--; // To insure zero base indexing
+            st= char(columnNumber%26 + 'A') + st;
+            columnNumber/=26;
+        }
+        return st;
+    }
+};
