@@ -1,0 +1,44 @@
+Nuts and Bolts Problem
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+    void matchPairs(int n, char nuts[], char bolts[]) {
+        // Predefined order of characters
+        string order = "!#$%&*?@^";
+        unordered_set<char> orderSet(order.begin(), order.end());
+
+        // Temporary vectors to hold matched characters
+        vector<char> matchedNuts, matchedBolts;
+
+        // Match characters from nuts and bolts based on the predefined order
+        for (char ch : order) {
+            bool foundInNuts = false, foundInBolts = false;
+            for (int i = 0; i < n; i++) {
+                if (nuts[i] == ch) foundInNuts = true;
+                if (bolts[i] == ch) foundInBolts = true;
+            }
+
+            // If the character is found in both nuts and bolts
+            if (foundInNuts && foundInBolts) {
+                matchedNuts.push_back(ch);
+                matchedBolts.push_back(ch);
+            }
+        }
+
+        // Update the input arrays with matched characters
+        for (int i = 0; i < n; i++) {
+            if (i < matchedNuts.size()) {
+                nuts[i] = matchedNuts[i];
+                bolts[i] = matchedBolts[i];
+            } else {
+                // Fill the rest with dummy values (to avoid undefined behavior)
+                nuts[i] = ' ';
+                bolts[i] = ' ';
+            }
+        }
+    }
+};
+
