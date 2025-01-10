@@ -1,0 +1,71 @@
+Phone directory
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+class TrieNode {
+public:
+    map<char, TrieNode*> children;
+    set<string> contacts; // To store unique contacts with the same prefix
+};
+
+class Trie {
+private:
+    TrieNode* root;
+    
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Insert a contact into the Trie
+    void insert(string contact) {
+        TrieNode* current = root;
+        for (char ch : contact) {
+            if (!current->children[ch])
+                current->children[ch] = new TrieNode();
+            current = current->children[ch];
+            current->contacts.insert(contact); // Add contact to this prefix
+        }
+    }
+
+    // Search for contacts with a given prefix
+    vector<string> search(string prefix) {
+        TrieNode* current = root;
+        for (char ch : prefix) {
+            if (!current->children[ch])
+                return {}; // Prefix not found
+            current = current->children[ch];
+        }
+        return vector<string>(current->contacts.begin(), current->contacts.end());
+    }
+};
+
+class Solution {
+public:
+    vector<vector<string>> displayContacts(int n, string contact[], string s) {
+        Trie trie;
+
+        // Insert all contacts into the Trie
+        for (int i = 0; i < n; i++) {
+            trie.insert(contact[i]);
+        }
+
+        vector<vector<string>> result;
+        string prefix = "";
+
+        // Search for contacts for each prefix of `s`
+        for (char ch : s) {
+            prefix += ch;
+            vector<string> matches = trie.search(prefix);
+
+            if (matches.empty()) {
+                result.push_back({"0"});
+            } else {
+                result.push_back(matches);
+            }
+        }
+        return result;
+    }
+};
