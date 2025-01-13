@@ -1,0 +1,53 @@
+Extra character in a string
+
+class Solution {
+private:
+    unordered_map<string, int> um; // Dictionary words
+    unordered_map<int, int> memo; // Memoization map to store results
+
+    // Recursive function with memoization to find the minimum number of extra characters
+    int solve(string& s, int ind) {
+        // Base case: If we've processed the entire string
+        if (ind >= s.size()) {
+            return 0; // No extra characters required
+        }
+
+        // If the result for this index is already computed, return it
+        if (memo.find(ind) != memo.end()) {
+            return memo[ind];
+        }
+
+        int extra = INT_MAX; // Initialize extra characters to maximum
+        string tmp = ""; // Temporary string to build substrings
+
+        // Try all substrings starting from the current index
+        for (int i = ind; i < s.size(); i++) {
+            tmp += s[i]; // Build the substring
+
+            // If the substring exists in the dictionary
+            if (um.find(tmp) != um.end()) {
+                // Recur for the remaining part of the string
+                extra = min(extra, solve(s, i + 1));
+            }
+        }
+
+        // Consider the case where the current character is counted as extra
+        extra = min(extra, 1 + solve(s, ind + 1));
+
+        // Store the result in the memoization map
+        memo[ind] = extra;
+
+        return extra; // Return the minimum extra characters
+    }
+
+public:
+    int minExtraChar(string s, vector<string>& dict) {
+        // Populate the dictionary map
+        for (auto& val : dict) {
+            um[val]++;
+        }
+
+        // Start solving from index 0
+        return solve(s, 0);
+    }
+};
