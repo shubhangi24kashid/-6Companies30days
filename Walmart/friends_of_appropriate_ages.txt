@@ -1,0 +1,40 @@
+Friends of appropriate ages
+
+class Solution {
+public:
+    int numFriendRequests(vector<int>& ages) {
+        
+        unordered_map<int,int>mp;
+        for(auto& a:ages){
+            mp[a]++;
+        }
+        
+        int res=0;
+        for(auto& a:mp){
+            for(auto& b:mp){
+                if(helper(a.first,b.first)){
+                    res+=a.second*(b.second-(a.first==b.first? 1:0));
+                }
+            }
+        }
+        return res;
+    }
+    bool helper(int a, int b){
+        return !(b<=0.5*a+7|| b>a || b>100 && a <100);
+    }
+};
+
+
+For helper
+A friend request is valid if none of the following conditions hold:
+b <= 0.5 * a + 7: Person b is too young for person a.
+b > a: Person b is older than person a.
+(b > 100 && a < 100): Person b is over 100, and person a is younger than 100 (age disparity too large).
+
+Adding Valid Requests
+
+res += a.second * (b.second - (a.first == b.first ? 1 : 0));
+a.second is the number of people with age a.first.
+b.second is the number of people with age b.first.
+If the ages are the same (a.first == b.first), the expression b.second - 1 is used to exclude self-requesting scenarios (a person cannot send a friend request to themselves).
+Otherwise, multiply the number of people with age a.first by the number of people with age b.first to calculate all valid requests between these two groups.
