@@ -1,0 +1,30 @@
+Russian doll envelop
+
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes) {
+        // Sort envelopes: width ascending, height descending if widths are the same
+        sort(envelopes.begin(), envelopes.end(), [](vector<int>& a, vector<int>& b) {
+            return a[0] == b[0] ? a[1] > b[1] : a[0] < b[0];
+        });
+
+        // Extract the heights
+        vector<int> heights;
+        for (auto& envelope : envelopes) {
+            heights.push_back(envelope[1]);
+        }
+
+        // Find LIS on heights
+        vector<int> lis;
+        for (int h : heights) {
+            auto it = lower_bound(lis.begin(), lis.end(), h);
+            if (it == lis.end()) {
+                lis.push_back(h); // Extend LIS
+            } else {
+                *it = h; // Replace element
+            }
+        }
+
+        return lis.size();
+    }
+};
