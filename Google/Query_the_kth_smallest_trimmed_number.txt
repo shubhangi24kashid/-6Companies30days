@@ -1,0 +1,35 @@
+Query the kth smallest trimmed number
+
+
+class Solution {
+public:
+    vector<int> smallestTrimmedNumbers(vector<string>& nums, vector<vector<int>>& queries) {
+        vector<int> answer;
+
+        for (const auto& query : queries) {
+            int k = query[0]; // kth smallest
+            int trim = query[1]; // number of digits to trim
+            
+            // Create a vector of pairs to store the trimmed numbers and their indices
+            vector<pair<string, int>> trimmed;
+            
+            for (int i = 0; i < nums.size(); ++i) {
+                // Extract the rightmost 'trim' characters from the current number
+                string trimmedNum = nums[i].substr(nums[i].size() - trim);
+                trimmed.emplace_back(trimmedNum, i);
+            }
+            
+            // Sort by trimmed number and then by index
+            sort(trimmed.begin(), trimmed.end(), [](const pair<string, int>& a, const pair<string, int>& b) {
+                if (a.first == b.first) 
+                    return a.second < b.second; // Break ties using indices
+                return a.first < b.first; // Otherwise, sort by trimmed number
+            });
+            
+            // Append the index of the k-th smallest trimmed number to the answer
+            answer.push_back(trimmed[k - 1].second);
+        }
+
+        return answer;
+    }
+};
