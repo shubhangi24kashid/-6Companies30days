@@ -1,0 +1,27 @@
+Assign cookies 
+
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        // Sort both arrays
+        sort(g.begin(), g.end());
+        sort(s.begin(), s.end());
+        
+        int j = 0;
+        int count = 0;
+        
+        // Iterate over the greed factors of the children
+        for (int i = 0; i < g.size(); i++) {
+            // Ensure we don't exceed the size of the cookie array
+            while (j < s.size() && s[j] < g[i]) {
+                j++; // Skip cookies that are too small
+            }
+            
+            if (j < s.size()) { // Check if there is a valid cookie
+                count++; // Satisfy one child
+                j++;     // Move to the next cookie
+            }
+        }
+        return count;
+    }
+};
