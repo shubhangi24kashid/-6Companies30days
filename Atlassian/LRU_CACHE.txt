@@ -1,0 +1,57 @@
+LRU_Cache
+
+
+
+#include <unordered_map>
+#include <list>
+using namespace std;
+
+class LRUCache {
+private:
+    int capacity;
+    list<pair<int, int>> cache; // Doubly linked list to store {key, value}.
+    unordered_map<int, list<pair<int, int>>::iterator> map; // Hash map to store key and iterator to its position in the list.
+
+public:
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+    }
+    
+    int get(int key) {
+        // Check if the key exists in the cache
+        if (map.find(key) == map.end()) {
+            return -1;
+        }
+        // Move the accessed key-value pair to the front (most recently used)
+        auto it = map[key];
+        cache.splice(cache.begin(), cache, it); // Move the node to the front of the list
+        return it->second;
+    }
+    
+    void put(int key, int value) {
+        // Check if the key already exists in the cache
+        if (map.find(key) != map.end()) {
+            // Update the value and move the node to the front
+            auto it = map[key];
+            it->second = value; // Update value
+            cache.splice(cache.begin(), cache, it); // Move node to the front
+        } else {
+            // If the cache is at full capacity, remove the least recently used (LRU) element
+            if (cache.size() == capacity) {
+                auto lru = cache.back(); // Get the least recently used key-value pair
+                map.erase(lru.first);    // Remove it from the hash map
+                cache.pop_back();        // Remove it from the list
+            }
+            // Insert the new key-value pair at the front
+            cache.push_front({key, value});
+            map[key] = cache.begin(); // Add it to the hash map
+        }
+    }
+};
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache* obj = new LRUCache(capacity);
+ * int param_1 = obj->get(key);
+ * obj->put(key,value);
+ */
